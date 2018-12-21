@@ -26,6 +26,82 @@ Originally hosted at http://9stmaryrd.com/tools/launch4j-maven-plugin/
 	</pluginRepositories>
 ```
 
+## ちなみに、obj, libの指定方法
+
+Launch4jはjavaを起動するためのスタブとなる部分をC言語で記述しており、リソースコンパイラとともにexe生成時にリンクして実行ファイルを作成している。
+
+このC言語で書かれた部分はMITライセンスになっており、これを自分用のスタートアップルーチンに書き換えて使うことも可能である。
+
+本プラグインのversion1.7.24では、Launch4jの3.12を使用している。
+
+Launch4j 3.12では、MinGWのbinutils 2.22を使用しており、このバージョンから、おそらく、gccは32ビット版の4.6.2あたりを使っていると思われる。
+
+Cのソースは、このLaunch4j 3.12のzip内に収められており、Dev-C++ 5.0.2以降あたりで*.devのプロジェクトファイルを開き、コンパイルすることができる。
+
+カスタマイズして得られたhead.o, guihead.oなどのOBJファイルは、同じ環境下のライブラリファイル(*.a)とともに指定する必要がある。(順番も重要)
+
+たとえば、以下のように記述する。
+
+```xml
+	<plugin>
+		<!-- Launch4jによるjarファイルのexe化を行う. http://launch4j.sourceforge.net/docs.html
+			プラグインが1.7.24の場合、使用するのはLaunch4j 3.12 である。
+			https://github.com/lukaszlenart/launch4j-maven-plugin/blob/master/pom.xml -->
+		<!-- <groupId>com.akathist.maven.plugins.launch4j</groupId> -->
+		<groupId>jp.seraphyware.maven.plugins.launch4j</groupId>
+		<artifactId>launch4j-maven-plugin</artifactId>
+		<version>1.7.24.1</version>
+		<executions>
+			<execution>
+				<id>l4j-gui</id>
+				<phase>package</phase>
+				<goals>
+					<goal>launch4j</goal>
+				</goals>
+				<configuration>
+					<headerType>gui</headerType>
+					<outfile>target/${project.artifactId}.exe</outfile>
+					<jar>target/${project.artifactId}.jar</jar>
+					<errTitle>Failed to execute the ${project.artifactId}</errTitle>
+					<icon>icon.ico</icon>
+					<objs>
+						<obj>src/Launch4JStub/w32api/crt2.o</obj>
+						<obj>src/Launch4JStub/head/head.o</obj>
+						<obj>src/Launch4JStub/head/guihead.o</obj>
+					</objs>
+					<libs>
+						<lib>src/Launch4jStub/w32api/libmingw32.a</lib>
+						<lib>src/Launch4jStub/w32api/libgcc.a</lib>
+						<lib>src/Launch4jStub/w32api/libmsvcrt.a</lib>
+						<lib>src/Launch4jStub/w32api/libkernel32.a</lib>
+						<lib>src/Launch4jStub/w32api/libuser32.a</lib>
+						<lib>src/Launch4jStub/w32api/libadvapi32.a</lib>
+						<lib>src/Launch4jStub/w32api/libshell32.a</lib>
+					</libs>
+					<jre>
+						<path>jre</path>
+						<minVersion>1.7.0</minVersion>
+						<initialHeapSize>64</initialHeapSize>
+						<maxHeapSize>128</maxHeapSize>
+					</jre>
+					<versionInfo>
+						<fileVersion>${project.version}</fileVersion>
+						<txtFileVersion>${project.version}.${buildNumber}</txtFileVersion>
+						<fileDescription>${project.artifactId} ${project.version} ${buildNumber}</fileDescription>
+						<copyright><![CDATA[${maven.build.timestamp} ${project.developers[0].id}]]></copyright>
+						<productVersion>${project.version}</productVersion>
+						<txtProductVersion>${project.version}</txtProductVersion>
+						<productName>${project.artifactId}</productName>
+						<internalName>${project.artifactId}</internalName>
+						<originalFilename>${project.artifactId}.exe</originalFilename>
+					</versionInfo>
+				</configuration>
+			</execution>
+		</executions>
+	</plugin>
+
+```
+
 ------
 
  - [Documentation](#documentation)
