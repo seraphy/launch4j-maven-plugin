@@ -1,9 +1,32 @@
-# Launch4j Maven Plugin
+# Launch4j Maven Plugin (Forked By Seraphy)
+[![Build Status](https://travis-ci.org/seraphy/launch4j-maven-plugin.svg?branch=bintray)](https://travis-ci.org/seraphy/launch4j-maven-plugin)
+[ ![Download](https://api.bintray.com/packages/seraphy/maven/launch4j-maven-plugin/images/download.svg) ](https://bintray.com/seraphy/maven/launch4j-maven-plugin/_latestVersion)
+
+
+Forked from https://github.com/lukaszlenart/launch4j-maven-plugin
 
 Originally hosted at http://9stmaryrd.com/tools/launch4j-maven-plugin/
 
-[![Build Status](https://travis-ci.org/lukaszlenart/launch4j-maven-plugin.svg)](https://travis-ci.org/lukaszlenart/launch4j-maven-plugin)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.akathist.maven.plugins.launch4j/launch4j-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.akathist.maven.plugins.launch4j/launch4j-maven-plugin/)
+
+これはlukaszlenart/launch4j-maven-pluginのLaunch4jプラグインのフォークです。
+
+以下の点を修正しています。
+
+- objs, libsの指定で作業ディレクトリに *.o, *.aファイルをコピーする際に親フォルダが作成されおらず、コピーできない。
+
+この生成物は[Bintray](https://bintray.com/seraphy/maven/launch4j-maven-plugin)にあります。
+
+```xml
+	<pluginRepositories>
+		<pluginRepository>
+			<id>bintray-seraphy-maven</id>
+			<name>bintray-plugins</name>
+			<url>https://dl.bintray.com/seraphy/maven</url>
+		</pluginRepository>
+	</pluginRepositories>
+```
+
+------
 
  - [Documentation](#documentation)
  - [Version Notes](#version-notes)
@@ -15,20 +38,23 @@ Please check [this](src/main/resources/README.adoc) document for more detailed i
 
 # Version Notes
 
+## Version notes 1.7.24.1
+- objs, libsで指定した*.o, *aファイルの作業フォルダへのコピーが失敗していた問題の修正
+
 ## Version notes 1.7.24
-- adds a `threadSafe` flag to the Mojo to properly mark that the plugin is thread safe, see [#72](../../issues/72) 
+- adds a `threadSafe` flag to the Mojo to properly mark that the plugin is thread safe, see [#72](../../issues/72)
 
 ## Version notes 1.7.23
-- adds a `parallelExecution` flag that will allow to run only one instance of the plugin in the given time, see [#72](../../issues/72) 
+- adds a `parallelExecution` flag that will allow to run only one instance of the plugin in the given time, see [#72](../../issues/72)
 
 ## Version notes 1.7.22
-- upgrades to Launch4j version 3.12, see [#75](../../issues/75) 
+- upgrades to Launch4j version 3.12, see [#75](../../issues/75)
 
 ## Version notes 1.7.21
-- fixes issue with detecting OSX, see [#58](../../issues/58) 
+- fixes issue with detecting OSX, see [#58](../../issues/58)
 
 ## Version notes 1.7.20
-- uses the `linux64` platform when run on 64-bit Linux, see [#59](../../pull/59) 
+- uses the `linux64` platform when run on 64-bit Linux, see [#59](../../pull/59)
 
 ## Version notes 1.7.19
 - upgrades to the version 3.11 of Launch4j
@@ -54,7 +80,7 @@ Please check [this](src/main/resources/README.adoc) document for more detailed i
 ## Version notes 1.7.12
 - adds support for missing options, see [#45](../../issues/45)
   - `language` - please use one of the values as defined for the `<language/>` tag
-  - `trademarks` -  a free text used as a trademarks 
+  - `trademarks` -  a free text used as a trademarks
 
 ## Version notes 1.7.11
 - upgrades to Launch4j version 3.9
@@ -65,7 +91,7 @@ Please check [this](src/main/resources/README.adoc) document for more detailed i
 ## Version notes 1.7.9
 - adds capability of loading Launch4j native configuration file
 ```xml
-<configuration> 
+<configuration>
     <infile>${project.basedir}/src/main/resources/my-app-config.xml</infile>
 </configuration>
 ```
