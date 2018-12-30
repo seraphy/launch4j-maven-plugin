@@ -26,6 +26,11 @@ Originally hosted at http://9stmaryrd.com/tools/launch4j-maven-plugin/
 	</pluginRepositories>
 ```
 
+**<span style="color:red">2018/12/29 本家のmaven pluginに、本修正PullRequestが受理され、無事、Maven Centralにも反映されました。</span>**
+
+**現在は、```1.7.25``` を使うことで、本修正は対応済みとなっています。**
+
+
 ## ちなみに、obj, libの指定方法
 
 Launch4jはjavaを起動するためのスタブとなる部分をC言語で記述しており、リソースコンパイラとともにexe生成時にリンクして実行ファイルを作成している。
